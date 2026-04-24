@@ -1,0 +1,1137 @@
+Index · HTML Copy
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IT58 Lab 5 — Facebook News Feed Redesign</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --fb-blue: #1877f2;
+        --fb-blue-dark: #0d6efd;
+        --white: #ffffff;
+        --gray-50: #f8f9fa;
+        --gray-100: #f1f3f4;
+        --gray-200: #e4e6eb;
+        --gray-300: #ced0d4;
+        --gray-400: #bec3c9;
+        --gray-500: #8a8d91;
+        --gray-600: #65676b;
+        --gray-700: #444950;
+        --gray-900: #1c1e21;
+        --green: #3b6d11;
+        --green-bg: #eaf3de;
+        --red: #a32d2d;
+        --red-bg: #fcebeb;
+        --amber: #633806;
+        --amber-bg: #faeeda;
+        --blue-bg: #e6f1fb;
+        --blue-text: #0c447c;
+        --radius-sm: 6px;
+        --radius-md: 8px;
+        --radius-lg: 12px;
+        --radius-xl: 16px;
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+        --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: #f0f2f5;
+        color: var(--gray-900);
+        min-height: 100vh;
+        padding: 0 0 80px;
+      }
+
+      /* ── PAGE HEADER ── */
+      .page-header {
+        background: var(--white);
+        border-bottom: 1px solid var(--gray-200);
+        padding: 28px 48px 24px;
+        margin-bottom: 48px;
+      }
+      .page-header .course-tag {
+        font-family: "DM Mono", monospace;
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--fb-blue);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+      }
+      .page-header h1 {
+        font-size: 26px;
+        font-weight: 600;
+        color: var(--gray-900);
+        margin-bottom: 6px;
+        line-height: 1.3;
+      }
+      .page-header p {
+        font-size: 14px;
+        color: var(--gray-600);
+      }
+      .frame-tabs {
+        display: flex;
+        gap: 0;
+        margin-top: 24px;
+        border-bottom: 1px solid var(--gray-200);
+      }
+      .frame-tab {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--gray-500);
+        padding: 10px 20px;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        transition:
+          color 0.15s,
+          border-color 0.15s;
+      }
+      .frame-tab.active {
+        color: var(--fb-blue);
+        border-bottom-color: var(--fb-blue);
+      }
+      .frame-tab:hover {
+        color: var(--gray-700);
+      }
+
+      /* ── LAYOUT ── */
+      .section {
+        max-width: 1100px;
+        margin: 0 auto 64px;
+        padding: 0 48px;
+        display: none;
+      }
+      .section.active {
+        display: block;
+      }
+
+      .section-heading {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--gray-500);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+      }
+      .section-title {
+        font-size: 22px;
+        font-weight: 600;
+        color: var(--gray-900);
+        margin-bottom: 6px;
+      }
+      .section-desc {
+        font-size: 14px;
+        color: var(--gray-600);
+        line-height: 1.6;
+        margin-bottom: 32px;
+        max-width: 680px;
+      }
+
+      .frames-row {
+        display: flex;
+        gap: 32px;
+        align-items: flex-start;
+        flex-wrap: wrap;
+      }
+
+      /* ── PHONE SHELL ── */
+      .phone-shell {
+        width: 280px;
+        border-radius: 36px;
+        border: 8px solid var(--gray-900);
+        background: var(--white);
+        overflow: hidden;
+        box-shadow:
+          var(--shadow-md),
+          inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+        flex-shrink: 0;
+        position: relative;
+      }
+      .phone-shell::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 22px;
+        background: var(--gray-900);
+        border-radius: 0 0 14px 14px;
+        z-index: 10;
+      }
+      .phone-shell.before-phone {
+        border-color: #c0392b;
+      }
+      .phone-shell.after-phone {
+        border-color: #27ae60;
+      }
+
+      .phone-status {
+        height: 36px;
+        background: var(--white);
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        padding: 0 20px 6px;
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--gray-900);
+        font-family: "DM Mono", monospace;
+      }
+
+      /* ── FB NAV ── */
+      .fb-nav {
+        background: var(--white);
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 14px;
+        border-bottom: 1px solid var(--gray-200);
+      }
+      .fb-logo {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--fb-blue);
+        font-family: Georgia, serif;
+        letter-spacing: -1px;
+      }
+      .fb-search {
+        background: var(--gray-100);
+        border-radius: 20px;
+        padding: 6px 12px;
+        font-size: 12px;
+        color: var(--gray-500);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        flex: 1;
+        max-width: 110px;
+        margin: 0 8px;
+      }
+      .fb-icons {
+        display: flex;
+        gap: 6px;
+      }
+      .fb-icon {
+        width: 28px;
+        height: 28px;
+        background: var(--gray-100);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+      }
+
+      /* ── FB TABS ── */
+      .fb-tabs {
+        display: flex;
+        background: var(--white);
+        border-bottom: 1px solid var(--gray-200);
+      }
+      .fb-tab {
+        flex: 1;
+        text-align: center;
+        padding: 10px 0;
+        font-size: 11px;
+        color: var(--gray-500);
+        border-bottom: 2px solid transparent;
+        cursor: pointer;
+      }
+      .fb-tab.active {
+        color: var(--fb-blue);
+        border-bottom-color: var(--fb-blue);
+      }
+
+      /* ── FEED CONTROLS BAR ── */
+      .feed-controls {
+        background: var(--white);
+        padding: 8px 12px;
+        border-bottom: 1px solid var(--gray-200);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .feed-controls-label {
+        font-size: 11px;
+        color: var(--gray-600);
+        font-weight: 500;
+      }
+      .toggles-group {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .toggle-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .toggle-item span {
+        font-size: 10px;
+        color: var(--gray-600);
+      }
+      .toggle-switch {
+        width: 30px;
+        height: 16px;
+        border-radius: 8px;
+        position: relative;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .toggle-switch.on {
+        background: var(--fb-blue);
+      }
+      .toggle-switch.off {
+        background: var(--gray-300);
+      }
+      .toggle-switch .knob {
+        position: absolute;
+        top: 2px;
+        width: 12px;
+        height: 12px;
+        background: white;
+        border-radius: 50%;
+        transition: left 0.2s;
+      }
+      .toggle-switch.on .knob {
+        left: 16px;
+      }
+      .toggle-switch.off .knob {
+        left: 2px;
+      }
+
+      /* ── FEED BODY ── */
+      .feed-body {
+        background: var(--gray-100);
+        padding: 8px 0;
+      }
+
+      /* ── POST CARD ── */
+      .post-card {
+        background: var(--white);
+        margin-bottom: 8px;
+        border-top: 1px solid var(--gray-200);
+        border-bottom: 1px solid var(--gray-200);
+      }
+      .post-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 12px 6px;
+      }
+      .avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 600;
+        flex-shrink: 0;
+      }
+      .post-meta {
+        flex: 1;
+      }
+      .post-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--gray-900);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        flex-wrap: wrap;
+      }
+      .post-time {
+        font-size: 11px;
+        color: var(--gray-500);
+        margin-top: 1px;
+      }
+      .badge {
+        display: inline-block;
+        font-size: 9px;
+        font-weight: 500;
+        padding: 2px 7px;
+        border-radius: 10px;
+        line-height: 1.4;
+      }
+      .badge-friend {
+        background: var(--green-bg);
+        color: var(--green);
+      }
+      .badge-ai {
+        background: var(--blue-bg);
+        color: var(--blue-text);
+      }
+      .badge-ad {
+        background: var(--amber-bg);
+        color: var(--amber);
+      }
+
+      .post-text {
+        font-size: 13px;
+        color: var(--gray-700);
+        line-height: 1.5;
+        padding: 0 12px 8px;
+      }
+      .post-image {
+        width: 100%;
+        height: 130px;
+        background: var(--gray-100);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gray-400);
+        font-size: 11px;
+        letter-spacing: 0.05em;
+        font-family: "DM Mono", monospace;
+        border-top: 1px solid var(--gray-200);
+        border-bottom: 1px solid var(--gray-200);
+      }
+      .post-reactions {
+        padding: 6px 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--gray-200);
+      }
+      .reactions-count {
+        font-size: 11px;
+        color: var(--gray-500);
+      }
+
+      /* ── REDESIGNED POST EXTRAS ── */
+      .why-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: var(--blue-bg);
+        color: var(--blue-text);
+        font-size: 11px;
+        font-weight: 500;
+        padding: 4px 10px;
+        border-radius: 12px;
+        border: none;
+        cursor: pointer;
+        margin: 4px 12px;
+        font-family: "DM Sans", sans-serif;
+        transition: background 0.15s;
+      }
+      .why-chip:hover {
+        background: #b5d4f4;
+      }
+      .why-chip svg {
+        width: 12px;
+        height: 12px;
+        flex-shrink: 0;
+      }
+
+      .post-actions-row {
+        display: flex;
+        gap: 0;
+        border-top: 1px solid var(--gray-200);
+      }
+      .post-action-btn {
+        flex: 1;
+        padding: 8px 4px;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--gray-600);
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        font-family: "DM Sans", sans-serif;
+        border-right: 1px solid var(--gray-200);
+        transition: background 0.12s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+      }
+      .post-action-btn:last-child {
+        border-right: none;
+      }
+      .post-action-btn:hover {
+        background: var(--gray-100);
+      }
+      .post-action-btn.override {
+        color: var(--gray-500);
+        font-size: 11px;
+      }
+
+      /* ── AD POST ── */
+      .ad-meta-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 6px 12px 0;
+        font-size: 11px;
+        color: var(--gray-500);
+      }
+      .why-ad-btn {
+        font-size: 11px;
+        color: var(--fb-blue);
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-family: "DM Sans", sans-serif;
+        padding: 0;
+      }
+
+      /* ── WIREFRAME STYLE ── */
+      .wf-shell {
+        width: 248px;
+        border-radius: 28px;
+        border: 6px solid var(--gray-700);
+        background: var(--gray-50);
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+        flex-shrink: 0;
+        position: relative;
+      }
+      .wf-shell::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 70px;
+        height: 18px;
+        background: var(--gray-700);
+        border-radius: 0 0 10px 10px;
+        z-index: 10;
+      }
+      .wf-status {
+        height: 30px;
+        background: var(--gray-50);
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        padding: 0 16px 4px;
+      }
+      .wf-bar {
+        height: 7px;
+        background: var(--gray-300);
+        border-radius: 4px;
+      }
+      .wf-img-block {
+        background: var(--gray-200);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gray-400);
+        font-size: 9px;
+        font-family: "DM Mono", monospace;
+        letter-spacing: 0.04em;
+      }
+      .wf-box {
+        background: var(--white);
+        border: 1px dashed var(--gray-300);
+        border-radius: var(--radius-sm);
+        padding: 8px 10px;
+        margin: 0 8px 8px;
+      }
+      .wf-header-row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 6px;
+      }
+      .wf-circle {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: var(--gray-200);
+        flex-shrink: 0;
+      }
+      .wf-lines {
+        flex: 1;
+      }
+      .wf-btn-row {
+        display: flex;
+        gap: 4px;
+        margin-top: 6px;
+      }
+      .wf-btn-box {
+        height: 18px;
+        background: var(--gray-200);
+        border-radius: 3px;
+        flex: 1;
+      }
+      .wf-nav-bar {
+        background: var(--gray-300);
+        height: 36px;
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+        gap: 8px;
+      }
+      .wf-nav-circle {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--gray-400);
+      }
+      .wf-nav-line {
+        height: 8px;
+        background: var(--gray-400);
+        border-radius: 4px;
+        flex: 1;
+      }
+      .wf-tab-bar {
+        background: var(--white);
+        height: 32px;
+        display: flex;
+        border-bottom: 1px solid var(--gray-200);
+      }
+      .wf-tab-item {
+        flex: 1;
+        height: 100%;
+        border-bottom: 2px solid transparent;
+      }
+      .wf-tab-item.active {
+        border-bottom-color: var(--gray-600);
+      }
+      .wf-control-bar {
+        background: var(--gray-100);
+        padding: 6px 8px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--gray-200);
+      }
+      .wf-toggle-group {
+        display: flex;
+        gap: 6px;
+      }
+      .wf-toggle-item {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+      }
+      .wf-toggle-pill {
+        width: 20px;
+        height: 10px;
+        background: var(--gray-300);
+        border-radius: 5px;
+      }
+      .wf-chip-row {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin: 4px 0;
+      }
+      .wf-chip {
+        height: 14px;
+        background: var(--gray-200);
+        border-radius: 7px;
+        width: 90px;
+      }
+
+      /* ── NOTES PANEL ── */
+      .notes-panel {
+        flex: 1;
+        min-width: 240px;
+        max-width: 340px;
+      }
+      .note-card {
+        background: var(--white);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--gray-200);
+        padding: 14px 16px;
+        margin-bottom: 10px;
+      }
+      .note-tag {
+        display: inline-block;
+        font-size: 10px;
+        font-weight: 500;
+        padding: 2px 8px;
+        border-radius: 8px;
+        margin-bottom: 7px;
+        font-family: "DM Mono", monospace;
+        letter-spacing: 0.03em;
+      }
+      .note-tag.wf {
+        background: var(--gray-100);
+        color: var(--gray-700);
+      }
+      .note-tag.hf {
+        background: var(--blue-bg);
+        color: var(--blue-text);
+      }
+      .note-tag.diff {
+        background: #f3f0ff;
+        color: #4a3b9c;
+      }
+      .note-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--gray-900);
+        margin-bottom: 5px;
+      }
+      .note-body {
+        font-size: 12px;
+        color: var(--gray-600);
+        line-height: 1.6;
+      }
+
+      /* ── COMPARISON FRAME ── */
+      .comparison-wrapper {
+        display: flex;
+        gap: 40px;
+        align-items: flex-start;
+        flex-wrap: wrap;
+      }
+      .comparison-phone-col {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+      .frame-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 5px 14px;
+        border-radius: 20px;
+      }
+      .frame-badge.before {
+        background: var(--red-bg);
+        color: var(--red);
+        border: 1px solid #f09595;
+      }
+      .frame-badge.after {
+        background: var(--green-bg);
+        color: var(--green);
+        border: 1px solid #97c459;
+      }
+      .diff-arrow {
+        font-size: 28px;
+        color: var(--gray-400);
+        align-self: center;
+        padding-top: 60px;
+      }
+      .diff-label {
+        font-size: 11px;
+        color: var(--gray-500);
+        text-align: center;
+        max-width: 220px;
+        line-height: 1.5;
+        padding: 8px 12px;
+        background: var(--white);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--gray-200);
+        margin-top: 8px;
+      }
+      .diff-label.bad {
+        border-color: #f09595;
+        color: var(--red);
+        background: var(--red-bg);
+      }
+      .diff-label.good {
+        border-color: #97c459;
+        color: var(--green);
+        background: var(--green-bg);
+      }
+
+      /* ── TRANSPARENCY POPUP ── */
+      .popup-sheet {
+        background: var(--white);
+        border: 1px solid var(--gray-200);
+        border-radius: var(--radius-lg);
+        padding: 12px 14px;
+        margin: 0 8px 8px;
+      }
+      .popup-handle {
+        width: 32px;
+        height: 4px;
+        background: var(--gray-300);
+        border-radius: 2px;
+        margin: 0 auto 10px;
+      }
+      .popup-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--gray-900);
+        margin-bottom: 6px;
+      }
+      .popup-body {
+        font-size: 11px;
+        color: var(--gray-600);
+        line-height: 1.6;
+        margin-bottom: 8px;
+      }
+      .popup-link {
+        font-size: 11px;
+        color: var(--fb-blue);
+        font-weight: 500;
+        cursor: pointer;
+      }
+
+      /* ── FOOTER ── */
+      .page-footer {
+        max-width: 1100px;
+        margin: 60px auto 0;
+        padding: 0 48px;
+        border-top: 1px solid var(--gray-200);
+        padding-top: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: gap;
+        gap: 12px;
+      }
+      .page-footer p {
+        font-size: 12px;
+        color: var(--gray-500);
+      }
+      .page-footer a {
+        color: var(--fb-blue);
+        text-decoration: none;
+        font-weight: 500;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="frame1" class="section active">
+      <div class="section-heading">Frame 1</div>
+      <div class="section-title">Low-fidelity wireframes</div>
+      <div class="section-desc">
+        Gray box representations of the current and redesigned feed. No color,
+        no real content — only structure and layout changes are shown.
+      </div>
+
+      <div class="frames-row">
+        <!-- WF BEFORE -->
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+          "
+        >
+          <div class="wf-shell">
+            <div class="wf-status">
+              <div
+                style="
+                  font-size: 9px;
+                  font-family: &quot;DM Mono&quot;, monospace;
+                  color: var(--gray-500);
+                "
+              >
+                9:41
+              </div>
+              <div style="display: flex; gap: 4px">
+                <div
+                  style="
+                    width: 14px;
+                    height: 7px;
+                    background: var(--gray-300);
+                    border-radius: 2px;
+                  "
+                ></div>
+                <div
+                  style="
+                    width: 14px;
+                    height: 7px;
+                    background: var(--gray-300);
+                    border-radius: 2px;
+                  "
+                ></div>
+              </div>
+            </div>
+            <div class="wf-nav-bar">
+              <div class="wf-nav-circle"></div>
+              <div class="wf-nav-line"></div>
+              <div class="wf-nav-circle"></div>
+              <div class="wf-nav-circle"></div>
+            </div>
+            <div class="wf-tab-bar">
+              <div class="wf-tab-item active"></div>
+              <div class="wf-tab-item"></div>
+              <div class="wf-tab-item"></div>
+              <div class="wf-tab-item"></div>
+            </div>
+            <div style="background: var(--gray-100); padding: 8px 0">
+              <!-- Post 1 -->
+              <div class="wf-box">
+                <div class="wf-header-row">
+                  <div class="wf-circle"></div>
+                  <div class="wf-lines">
+                    <div
+                      class="wf-bar"
+                      style="width: 70%; margin-bottom: 4px"
+                    ></div>
+                    <div class="wf-bar" style="width: 40%"></div>
+                  </div>
+                </div>
+                <div
+                  class="wf-img-block"
+                  style="height: 70px; margin-bottom: 6px"
+                >
+                  image
+                </div>
+                <div class="wf-bar" style="margin-bottom: 4px"></div>
+                <div
+                  class="wf-bar"
+                  style="width: 60%; margin-bottom: 4px"
+                ></div>
+                <div class="wf-btn-row">
+                  <div class="wf-btn-box"></div>
+                  <div class="wf-btn-box"></div>
+                  <div class="wf-btn-box"></div>
+                </div>
+              </div>
+              <!-- Post 2 -->
+              <div class="wf-box">
+                <div class="wf-header-row">
+                  <div class="wf-circle"></div>
+                  <div class="wf-lines">
+                    <div
+                      class="wf-bar"
+                      style="width: 65%; margin-bottom: 4px"
+                    ></div>
+                    <div class="wf-bar" style="width: 35%"></div>
+                  </div>
+                </div>
+                <div class="wf-bar" style="margin-bottom: 4px"></div>
+                <div
+                  class="wf-bar"
+                  style="width: 80%; margin-bottom: 4px"
+                ></div>
+                <div class="wf-img-block" style="height: 50px">image</div>
+              </div>
+              <!-- Post 3 -->
+              <div class="wf-box" style="margin-bottom: 0">
+                <div class="wf-header-row">
+                  <div class="wf-circle"></div>
+                  <div class="wf-lines">
+                    <div
+                      class="wf-bar"
+                      style="width: 60%; margin-bottom: 4px"
+                    ></div>
+                    <div class="wf-bar" style="width: 30%"></div>
+                  </div>
+                </div>
+                <div class="wf-bar" style="margin-bottom: 4px"></div>
+                <div class="wf-bar" style="width: 50%"></div>
+              </div>
+            </div>
+          </div>
+          <div
+            style="
+              font-size: 12px;
+              color: var(--gray-500);
+              text-align: center;
+              font-weight: 500;
+            "
+          >
+            WF-01 — Current feed<br /><span
+              style="font-size: 11px; color: var(--gray-400)"
+              >No controls, no labels</span
+            >
+          </div>
+        </div>
+
+        <!-- ARROW -->
+        <div
+          style="
+            font-size: 22px;
+            color: var(--gray-300);
+            align-self: center;
+            padding-top: 40px;
+          "
+        >
+          →
+        </div>
+
+        <!-- WF AFTER -->
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+          "
+        >
+          <div class="wf-shell">
+            <div class="wf-status">
+              <div
+                style="
+                  font-size: 9px;
+                  font-family: &quot;DM Mono&quot;, monospace;
+                  color: var(--gray-500);
+                "
+              >
+                9:41
+              </div>
+              <div style="display: flex; gap: 4px">
+                <div
+                  style="
+                    width: 14px;
+                    height: 7px;
+                    background: var(--gray-300);
+                    border-radius: 2px;
+                  "
+                ></div>
+                <div
+                  style="
+                    width: 14px;
+                    height: 7px;
+                    background: var(--gray-300);
+                    border-radius: 2px;
+                  "
+                ></div>
+              </div>
+            </div>
+            <div class="wf-nav-bar">
+              <div class="wf-nav-circle"></div>
+              <div class="wf-nav-line"></div>
+              <div class="wf-nav-circle"></div>
+              <div class="wf-nav-circle"></div>
+            </div>
+            <div class="wf-tab-bar">
+              <div class="wf-tab-item active"></div>
+              <div class="wf-tab-item"></div>
+              <div class="wf-tab-item"></div>
+              <div class="wf-tab-item"></div>
+            </div>
+            <!-- FEED CONTROL BAR (new) -->
+            <div class="wf-control-bar">
+              <div class="wf-bar" style="width: 50px"></div>
+              <div class="wf-toggle-group">
+                <div class="wf-toggle-item">
+                  <div class="wf-bar" style="width: 30px"></div>
+                  <div class="wf-toggle-pill"></div>
+                </div>
+                <div class="wf-toggle-item">
+                  <div class="wf-bar" style="width: 30px"></div>
+                  <div
+                    class="wf-toggle-pill"
+                    style="background: var(--gray-500)"
+                  ></div>
+                </div>
+              </div>
+            </div>
+            <div style="background: var(--gray-100); padding: 8px 0">
+              <!-- Post 1 with controls -->
+              <div class="wf-box">
+                <div class="wf-header-row">
+                  <div class="wf-circle"></div>
+                  <div class="wf-lines">
+                    <div
+                      style="
+                        display: flex;
+                        gap: 4px;
+                        align-items: center;
+                        margin-bottom: 4px;
+                      "
+                    >
+                      <div class="wf-bar" style="width: 50%"></div>
+                      <div
+                        style="
+                          height: 10px;
+                          width: 28px;
+                          background: var(--gray-200);
+                          border-radius: 5px;
+                        "
+                      ></div>
+                    </div>
+                    <div class="wf-bar" style="width: 35%"></div>
+                  </div>
+                </div>
+                <div
+                  class="wf-img-block"
+                  style="height: 60px; margin-bottom: 6px"
+                >
+                  image
+                </div>
+                <!-- why chip -->
+                <div class="wf-chip-row">
+                  <div class="wf-chip"></div>
+                </div>
+                <!-- override buttons -->
+                <div class="wf-btn-row">
+                  <div class="wf-btn-box"></div>
+                  <div class="wf-btn-box"></div>
+                  <div class="wf-btn-box"></div>
+                </div>
+              </div>
+              <!-- Post 2 -->
+              <div class="wf-box" style="margin-bottom: 0">
+                <div class="wf-header-row">
+                  <div class="wf-circle"></div>
+                  <div class="wf-lines">
+                    <div
+                      style="
+                        display: flex;
+                        gap: 4px;
+                        align-items: center;
+                        margin-bottom: 4px;
+                      "
+                    >
+                      <div class="wf-bar" style="width: 55%"></div>
+                      <div
+                        style="
+                          height: 10px;
+                          width: 28px;
+                          background: var(--gray-200);
+                          border-radius: 5px;
+                        "
+                      ></div>
+                    </div>
+                    <div class="wf-bar" style="width: 40%"></div>
+                  </div>
+                </div>
+                <div
+                  class="wf-img-block"
+                  style="height: 45px; margin-bottom: 6px"
+                >
+                  image
+                </div>
+                <div class="wf-chip-row">
+                  <div class="wf-chip"></div>
+                </div>
+                <div class="wf-btn-row">
+                  <div class="wf-btn-box"></div>
+                  <div class="wf-btn-box"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            style="
+              font-size: 12px;
+              color: var(--gray-500);
+              text-align: center;
+              font-weight: 500;
+            "
+          >
+            WF-02 — Redesigned feed<br /><span
+              style="font-size: 11px; color: var(--gray-400)"
+              >Control bar + per-post chips</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
