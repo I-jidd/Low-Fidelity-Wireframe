@@ -1,11 +1,9 @@
-Index · HTML Copy
-
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>IT58 Lab 5 — Facebook News Feed Redesign</title>
+    <title>IT58 Lab 5 — Facebook News Feed Redesign (Single Page)</title>
     <link
       href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap"
       rel="stylesheet"
@@ -54,7 +52,7 @@ Index · HTML Copy
         padding: 0 0 80px;
       }
 
-      /* ── PAGE HEADER ── */
+      /* ── PAGE HEADER (no tabs) ── */
       .page-header {
         background: var(--white);
         border-bottom: 1px solid var(--gray-200);
@@ -81,40 +79,13 @@ Index · HTML Copy
         font-size: 14px;
         color: var(--gray-600);
       }
-      .frame-tabs {
-        display: flex;
-        gap: 0;
-        margin-top: 24px;
-        border-bottom: 1px solid var(--gray-200);
-      }
-      .frame-tab {
-        font-size: 13px;
-        font-weight: 500;
-        color: var(--gray-500);
-        padding: 10px 20px;
-        cursor: pointer;
-        border-bottom: 2px solid transparent;
-        transition:
-          color 0.15s,
-          border-color 0.15s;
-      }
-      .frame-tab.active {
-        color: var(--fb-blue);
-        border-bottom-color: var(--fb-blue);
-      }
-      .frame-tab:hover {
-        color: var(--gray-700);
-      }
 
-      /* ── LAYOUT ── */
+      /* ── LAYOUT: all sections visible, no tabs ── */
       .section {
         max-width: 1100px;
-        margin: 0 auto 64px;
+        margin: 0 auto 80px;
         padding: 0 48px;
-        display: none;
-      }
-      .section.active {
-        display: block;
+        display: block; /* All sections visible, stacked vertically */
       }
 
       .section-heading {
@@ -795,7 +766,7 @@ Index · HTML Copy
         display: flex;
         align-items: center;
         justify-content: space-between;
-        flex-wrap: gap;
+        flex-wrap: wrap;
         gap: 12px;
       }
       .page-footer p {
@@ -810,9 +781,22 @@ Index · HTML Copy
     </style>
   </head>
   <body>
-    <div id="frame1" class="section active">
-      <div class="section-heading">Frame 1</div>
-      <div class="section-title">Low-fidelity wireframes</div>
+    <!-- PAGE HEADER (no tabs) -->
+    <div class="page-header">
+      <div class="course-tag">IT58 — Laboratory Activity 5</div>
+      <h1>Facebook News Feed — UI Redesign</h1>
+      <p>
+        Metaphor alignment: Agent → Supertool &nbsp;·&nbsp; Human-Centered AI
+        Design
+      </p>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- FRAME 1: WIREFRAMES (Low‑fidelity)                      -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="frame1" class="section">
+      <div class="section-heading">Frame 1 — Low‑fidelity wireframes</div>
+      <div class="section-title">Structural changes only</div>
       <div class="section-desc">
         Gray box representations of the current and redesigned feed. No color,
         no real content — only structure and layout changes are shown.
@@ -830,15 +814,14 @@ Index · HTML Copy
         >
           <div class="wf-shell">
             <div class="wf-status">
-              <div
+              <span
                 style="
                   font-size: 9px;
                   font-family: &quot;DM Mono&quot;, monospace;
                   color: var(--gray-500);
                 "
+                >9:41</span
               >
-                9:41
-              </div>
               <div style="display: flex; gap: 4px">
                 <div
                   style="
@@ -871,7 +854,6 @@ Index · HTML Copy
               <div class="wf-tab-item"></div>
             </div>
             <div style="background: var(--gray-100); padding: 8px 0">
-              <!-- Post 1 -->
               <div class="wf-box">
                 <div class="wf-header-row">
                   <div class="wf-circle"></div>
@@ -900,7 +882,6 @@ Index · HTML Copy
                   <div class="wf-btn-box"></div>
                 </div>
               </div>
-              <!-- Post 2 -->
               <div class="wf-box">
                 <div class="wf-header-row">
                   <div class="wf-circle"></div>
@@ -919,7 +900,6 @@ Index · HTML Copy
                 ></div>
                 <div class="wf-img-block" style="height: 50px">image</div>
               </div>
-              <!-- Post 3 -->
               <div class="wf-box" style="margin-bottom: 0">
                 <div class="wf-header-row">
                   <div class="wf-circle"></div>
@@ -951,7 +931,6 @@ Index · HTML Copy
           </div>
         </div>
 
-        <!-- ARROW -->
         <div
           style="
             font-size: 22px;
@@ -974,15 +953,14 @@ Index · HTML Copy
         >
           <div class="wf-shell">
             <div class="wf-status">
-              <div
+              <span
                 style="
                   font-size: 9px;
                   font-family: &quot;DM Mono&quot;, monospace;
                   color: var(--gray-500);
                 "
+                >9:41</span
               >
-                9:41
-              </div>
               <div style="display: flex; gap: 4px">
                 <div
                   style="
@@ -1014,7 +992,6 @@ Index · HTML Copy
               <div class="wf-tab-item"></div>
               <div class="wf-tab-item"></div>
             </div>
-            <!-- FEED CONTROL BAR (new) -->
             <div class="wf-control-bar">
               <div class="wf-bar" style="width: 50px"></div>
               <div class="wf-toggle-group">
@@ -1032,7 +1009,6 @@ Index · HTML Copy
               </div>
             </div>
             <div style="background: var(--gray-100); padding: 8px 0">
-              <!-- Post 1 with controls -->
               <div class="wf-box">
                 <div class="wf-header-row">
                   <div class="wf-circle"></div>
@@ -1064,18 +1040,13 @@ Index · HTML Copy
                 >
                   image
                 </div>
-                <!-- why chip -->
-                <div class="wf-chip-row">
-                  <div class="wf-chip"></div>
-                </div>
-                <!-- override buttons -->
+                <div class="wf-chip-row"><div class="wf-chip"></div></div>
                 <div class="wf-btn-row">
                   <div class="wf-btn-box"></div>
                   <div class="wf-btn-box"></div>
                   <div class="wf-btn-box"></div>
                 </div>
               </div>
-              <!-- Post 2 -->
               <div class="wf-box" style="margin-bottom: 0">
                 <div class="wf-header-row">
                   <div class="wf-circle"></div>
@@ -1107,9 +1078,7 @@ Index · HTML Copy
                 >
                   image
                 </div>
-                <div class="wf-chip-row">
-                  <div class="wf-chip"></div>
-                </div>
+                <div class="wf-chip-row"><div class="wf-chip"></div></div>
                 <div class="wf-btn-row">
                   <div class="wf-btn-box"></div>
                   <div class="wf-btn-box"></div>
@@ -1131,7 +1100,669 @@ Index · HTML Copy
             >
           </div>
         </div>
+
+        <!-- NOTES -->
+        <div class="notes-panel">
+          <div class="note-card">
+            <div class="note-tag wf">WF-01 — Before</div>
+            <div class="note-title">Current feed structure</div>
+            <div class="note-body">
+              Gray boxes represent posts of unknown origin. No controls, no
+              labels, no transparency elements. The algorithm is entirely
+              invisible to the user. Standard like/comment/share actions only.
+            </div>
+          </div>
+          <div class="note-card">
+            <div class="note-tag wf">WF-02 — After</div>
+            <div class="note-title">Redesigned feed structure</div>
+            <div class="note-body">
+              Three new structural additions:<br /><br />1.
+              <strong>Feed control bar</strong> — persistent row below tabs with
+              chronological and AI-picks toggles.<br /><br />2.
+              <strong>Content badge</strong> — pill shape on every post header
+              indicating origin type.<br /><br />3.
+              <strong>Per-post action chips</strong> — "Why am I seeing this?"
+              chip and override buttons below each post image.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- FRAME 2: HIGH FIDELITY                                  -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="frame2" class="section">
+      <div class="section-heading">
+        Frame 2 — High‑fidelity redesigned interface
+      </div>
+      <div class="section-title">Full‑color, production‑ready mockup</div>
+      <div class="section-desc">
+        Reflects the Supertool metaphor with interactive toggles, badges, and
+        transparency sheet.
+      </div>
+
+      <div class="frames-row">
+        <!-- HF MAIN SCREEN -->
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+          "
+        >
+          <div class="phone-shell after-phone">
+            <div class="phone-status"><span>9:41</span><span>◼◼◼</span></div>
+            <div class="fb-nav">
+              <div class="fb-logo">f</div>
+              <div class="fb-search">🔍 <span>Search</span></div>
+              <div class="fb-icons">
+                <div class="fb-icon">👥</div>
+                <div class="fb-icon">🔔</div>
+              </div>
+            </div>
+            <div class="fb-tabs">
+              <div class="fb-tab active">Home</div>
+              <div class="fb-tab">Watch</div>
+              <div class="fb-tab">Groups</div>
+              <div class="fb-tab">Notif.</div>
+            </div>
+            <div class="feed-controls">
+              <span class="feed-controls-label">Feed mode</span>
+              <div class="toggles-group">
+                <div class="toggle-item">
+                  <span>Chrono</span>
+                  <div
+                    class="toggle-switch off"
+                    onclick="
+                      this.classList.toggle('on');
+                      this.classList.toggle('off');
+                      this.querySelector('.knob').style.left =
+                        this.classList.contains('on') ? '16px' : '2px';
+                    "
+                  >
+                    <div class="knob"></div>
+                  </div>
+                </div>
+                <div class="toggle-item">
+                  <span>AI picks</span>
+                  <div
+                    class="toggle-switch on"
+                    onclick="
+                      this.classList.toggle('on');
+                      this.classList.toggle('off');
+                      this.querySelector('.knob').style.left =
+                        this.classList.contains('on') ? '16px' : '2px';
+                    "
+                  >
+                    <div class="knob" style="left: 16px"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="feed-body">
+              <div class="post-card">
+                <div class="post-header">
+                  <div
+                    class="avatar"
+                    style="background: #b5d4f4; color: #0c447c"
+                  >
+                    MR
+                  </div>
+                  <div class="post-meta">
+                    <div class="post-name">
+                      Maria Reyes <span class="badge badge-friend">friend</span>
+                    </div>
+                    <div class="post-time">2 hrs ago · 🌐</div>
+                  </div>
+                  <span
+                    style="
+                      font-size: 16px;
+                      color: var(--gray-500);
+                      cursor: pointer;
+                    "
+                    >⋯</span
+                  >
+                </div>
+                <div class="post-text">
+                  Had the best weekend at the lake! Finally got to unwind after
+                  a hectic month 🌊
+                </div>
+                <div class="post-image">[ photo ]</div>
+                <div class="post-reactions">
+                  <span class="reactions-count">❤️ 👍 24 reactions</span
+                  ><span class="reactions-count">5 comments</span>
+                </div>
+                <button class="why-chip">
+                  <svg viewBox="0 0 16 16" fill="none">
+                    <circle
+                      cx="8"
+                      cy="8"
+                      r="7"
+                      stroke="#0C447C"
+                      stroke-width="1.5"
+                    />
+                    <line
+                      x1="8"
+                      y1="7"
+                      x2="8"
+                      y2="12"
+                      stroke="#0C447C"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                    />
+                    <circle cx="8" cy="5" r="0.8" fill="#0C447C" />
+                  </svg>
+                  Why am I seeing this?
+                </button>
+                <div class="post-actions-row">
+                  <button class="post-action-btn">👍 Like</button
+                  ><button class="post-action-btn">💬 Comment</button
+                  ><button class="post-action-btn override">↓ Move down</button
+                  ><button class="post-action-btn override">
+                    ✕ Not interested
+                  </button>
+                </div>
+              </div>
+              <div class="post-card">
+                <div class="post-header">
+                  <div
+                    class="avatar"
+                    style="background: #faeeda; color: #633806"
+                  >
+                    AI
+                  </div>
+                  <div class="post-meta">
+                    <div class="post-name">
+                      Trending video
+                      <span class="badge badge-ai">AI suggested</span>
+                    </div>
+                    <div class="post-time">Based on your watch history</div>
+                  </div>
+                  <span
+                    style="
+                      font-size: 16px;
+                      color: var(--gray-500);
+                      cursor: pointer;
+                    "
+                    >⋯</span
+                  >
+                </div>
+                <div class="post-text">
+                  Top 10 moments from last weekend's games — you won't believe
+                  #3!
+                </div>
+                <div class="post-image">[ video thumbnail ]</div>
+                <button class="why-chip">
+                  <svg viewBox="0 0 16 16" fill="none">
+                    <circle
+                      cx="8"
+                      cy="8"
+                      r="7"
+                      stroke="#0C447C"
+                      stroke-width="1.5"
+                    />
+                    <line
+                      x1="8"
+                      y1="7"
+                      x2="8"
+                      y2="12"
+                      stroke="#0C447C"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                    />
+                    <circle cx="8" cy="5" r="0.8" fill="#0C447C" />
+                  </svg>
+                  3 of your friends watched this
+                </button>
+                <div class="post-actions-row">
+                  <button class="post-action-btn">👍 Like</button
+                  ><button class="post-action-btn">💬 Comment</button
+                  ><button class="post-action-btn override">↓ Move down</button
+                  ><button class="post-action-btn override">
+                    ✕ Not interested
+                  </button>
+                </div>
+              </div>
+              <div class="post-card">
+                <div class="ad-meta-row">
+                  <span class="badge badge-ad">Sponsored</span
+                  ><button class="why-ad-btn">Why this ad? ✕</button>
+                </div>
+                <div class="post-header" style="padding-top: 6px">
+                  <div
+                    class="avatar"
+                    style="
+                      background: var(--gray-100);
+                      color: var(--gray-600);
+                      font-size: 10px;
+                    "
+                  >
+                    NK
+                  </div>
+                  <div class="post-meta">
+                    <div class="post-name">Nike Philippines</div>
+                    <div class="post-time">
+                      Shown: you searched running shoes
+                    </div>
+                  </div>
+                </div>
+                <div class="post-text">
+                  Air Max 2025 — Free shipping this weekend only. Limited sizes
+                  available.
+                </div>
+                <div class="post-image">[ ad image ]</div>
+                <div class="post-actions-row">
+                  <button
+                    class="post-action-btn"
+                    style="color: var(--fb-blue); font-weight: 600"
+                  >
+                    Shop Now</button
+                  ><button class="post-action-btn override">✕ Hide ad</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            style="
+              font-size: 12px;
+              color: var(--gray-500);
+              text-align: center;
+              font-weight: 500;
+            "
+          >
+            HF-01 — Redesigned feed<br /><span
+              style="font-size: 11px; color: var(--gray-400)"
+              >Main screen (interactive toggles)</span
+            >
+          </div>
+        </div>
+
+        <!-- HF TRANSPARENCY POPUP -->
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+          "
+        >
+          <div class="phone-shell after-phone" style="width: 248px">
+            <div class="phone-status"><span>9:41</span><span>◼◼◼</span></div>
+            <div
+              style="
+                background: rgba(0, 0, 0, 0.35);
+                height: 200px;
+                display: flex;
+                align-items: flex-end;
+              "
+            >
+              <div
+                style="
+                  width: 100%;
+                  background: var(--white);
+                  border-radius: 16px 16px 0 0;
+                  padding: 12px 14px 16px;
+                "
+              >
+                <div class="popup-handle"></div>
+                <div class="popup-title">Why am I seeing this?</div>
+                <div class="popup-body">
+                  Maria Reyes is saved as a <strong>close friend</strong>. Her
+                  posts are ranked higher because you interact frequently and
+                  react to her content regularly.<br /><br />The algorithm also
+                  detected that 12 mutual friends have engaged with this post in
+                  the last hour.
+                </div>
+                <div class="popup-link">Change close friends list →</div>
+                <div class="popup-link" style="margin-top: 4px">
+                  Adjust ranking preferences →
+                </div>
+              </div>
+            </div>
+            <div class="feed-body" style="opacity: 0.4">
+              <div class="post-card" style="pointer-events: none">
+                <div class="post-header">
+                  <div
+                    class="avatar"
+                    style="background: #b5d4f4; color: #0c447c"
+                  >
+                    MR
+                  </div>
+                  <div class="post-meta">
+                    <div class="post-name">Maria Reyes</div>
+                    <div class="post-time">2 hrs ago</div>
+                  </div>
+                </div>
+                <div class="post-image" style="height: 60px">[ photo ]</div>
+              </div>
+            </div>
+          </div>
+          <div
+            style="
+              font-size: 12px;
+              color: var(--gray-500);
+              text-align: center;
+              font-weight: 500;
+            "
+          >
+            HF-02 — Transparency sheet<br /><span
+              style="font-size: 11px; color: var(--gray-400)"
+              >Opens on "Why am I seeing this?"</span
+            >
+          </div>
+        </div>
+
+        <!-- NOTES -->
+        <div class="notes-panel">
+          <div class="note-card">
+            <div class="note-tag hf">Design note</div>
+            <div class="note-title">Feed control bar</div>
+            <div class="note-body">
+              Always visible below the tab bar. Chronological toggle (default
+              off) gives full algorithm override. AI picks toggle (default on)
+              makes recommendations explicit. Both are persistent — not buried
+              in settings.
+            </div>
+          </div>
+          <div class="note-card">
+            <div class="note-tag hf">Design note</div>
+            <div class="note-title">Content origin badges</div>
+            <div class="note-body">
+              Three badge types:
+              <span class="badge badge-friend">friend</span> (green),
+              <span class="badge badge-ai">AI suggested</span> (blue),
+              <span class="badge badge-ad">Sponsored</span> (amber). Every piece
+              of content is labeled so users always know its origin.
+            </div>
+          </div>
+          <div class="note-card">
+            <div class="note-tag hf">Design note</div>
+            <div class="note-title">Transparency chip</div>
+            <div class="note-body">
+              The "Why am I seeing this?" chip is always visible on every post —
+              not hidden in a 3-dot menu. Tapping it opens the bottom sheet
+              (HF-02) with a plain-language explanation of the ranking reason.
+            </div>
+          </div>
+          <div class="note-card">
+            <div class="note-tag hf">Design note</div>
+            <div class="note-title">Override actions</div>
+            <div class="note-body">
+              "Move down" and "Not interested" are always visible in the action
+              row. Actions are confirmed immediately. The AI learns from
+              explicit signals rather than invisible behavioral tracking.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- FRAME 3: BEFORE vs AFTER                               -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="frame3" class="section">
+      <div class="section-heading">Frame 3 — Before vs. After comparison</div>
+      <div class="section-title">Agent vs. Supertool</div>
+      <div class="section-desc">
+        Side-by-side comparison of the current Facebook News Feed versus the
+        redesigned interface, highlighting the key structural changes.
+      </div>
+
+      <div class="comparison-wrapper">
+        <div class="comparison-phone-col">
+          <div class="frame-badge before">✕ Before — Agent (misaligned)</div>
+          <div class="phone-shell before-phone">
+            <div class="phone-status"><span>9:41</span><span>◼◼◼</span></div>
+            <div class="fb-nav">
+              <div class="fb-logo">f</div>
+              <div class="fb-search">🔍 <span>Search</span></div>
+              <div class="fb-icons">
+                <div class="fb-icon">👥</div>
+                <div class="fb-icon">🔔</div>
+              </div>
+            </div>
+            <div class="fb-tabs">
+              <div class="fb-tab active">Home</div>
+              <div class="fb-tab">Watch</div>
+              <div class="fb-tab">Groups</div>
+              <div class="fb-tab">Notif.</div>
+            </div>
+            <div class="feed-body">
+              <div class="post-card">
+                <div class="post-header">
+                  <div
+                    class="avatar"
+                    style="background: #b5d4f4; color: #0c447c"
+                  >
+                    MR
+                  </div>
+                  <div class="post-meta">
+                    <div class="post-name">Maria Reyes</div>
+                    <div class="post-time">2 hrs ago · 🌐</div>
+                  </div>
+                  <span style="font-size: 16px; color: var(--gray-500)">⋯</span>
+                </div>
+                <div class="post-text">
+                  Had the best weekend at the lake! 🌊
+                </div>
+                <div class="post-image" style="height: 90px">[ photo ]</div>
+                <div class="post-actions-row">
+                  <button class="post-action-btn">👍 Like</button
+                  ><button class="post-action-btn">💬 Comment</button
+                  ><button class="post-action-btn">↗ Share</button>
+                </div>
+              </div>
+              <div class="post-card">
+                <div class="ad-meta-row" style="padding: 8px 12px 0">
+                  <span style="font-size: 11px; color: var(--gray-500)"
+                    >Sponsored</span
+                  >
+                </div>
+                <div class="post-header" style="padding-top: 6px">
+                  <div
+                    class="avatar"
+                    style="
+                      background: var(--gray-100);
+                      color: var(--gray-600);
+                      font-size: 10px;
+                    "
+                  >
+                    NK
+                  </div>
+                  <div class="post-meta">
+                    <div class="post-name">Nike Philippines</div>
+                  </div>
+                </div>
+                <div class="post-text">Air Max 2025 — Shop now!</div>
+                <div class="post-image" style="height: 70px">[ ad image ]</div>
+                <div class="post-actions-row">
+                  <button
+                    class="post-action-btn"
+                    style="color: var(--fb-blue); font-weight: 600"
+                  >
+                    Shop Now</button
+                  ><button class="post-action-btn">👍 Like</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="diff-label bad">
+            Algorithm invisible · No controls<br />No content labels · No
+            override
+          </div>
+        </div>
+        <div class="diff-arrow">→</div>
+        <div class="comparison-phone-col">
+          <div class="frame-badge after">✓ After — Supertool (aligned)</div>
+          <div class="phone-shell after-phone">
+            <div class="phone-status"><span>9:41</span><span>◼◼◼</span></div>
+            <div class="fb-nav">
+              <div class="fb-logo">f</div>
+              <div class="fb-search">🔍 <span>Search</span></div>
+              <div class="fb-icons">
+                <div class="fb-icon">👥</div>
+                <div class="fb-icon">🔔</div>
+              </div>
+            </div>
+            <div class="fb-tabs">
+              <div class="fb-tab active">Home</div>
+              <div class="fb-tab">Watch</div>
+              <div class="fb-tab">Groups</div>
+              <div class="fb-tab">Notif.</div>
+            </div>
+            <div class="feed-controls">
+              <span class="feed-controls-label">Feed mode</span>
+              <div class="toggles-group">
+                <div class="toggle-item">
+                  <span>Chrono</span>
+                  <div class="toggle-switch off"><div class="knob"></div></div>
+                </div>
+                <div class="toggle-item">
+                  <span>AI picks</span>
+                  <div class="toggle-switch on">
+                    <div class="knob" style="left: 16px"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="feed-body">
+              <div class="post-card">
+                <div class="post-header">
+                  <div
+                    class="avatar"
+                    style="background: #b5d4f4; color: #0c447c"
+                  >
+                    MR
+                  </div>
+                  <div class="post-meta">
+                    <div class="post-name">
+                      Maria Reyes <span class="badge badge-friend">friend</span>
+                    </div>
+                    <div class="post-time">2 hrs ago · 🌐</div>
+                  </div>
+                  <span style="font-size: 16px; color: var(--gray-500)">⋯</span>
+                </div>
+                <div class="post-text">
+                  Had the best weekend at the lake! 🌊
+                </div>
+                <div class="post-image" style="height: 70px">[ photo ]</div>
+                <button class="why-chip">
+                  <svg viewBox="0 0 16 16" fill="none">
+                    <circle
+                      cx="8"
+                      cy="8"
+                      r="7"
+                      stroke="#0C447C"
+                      stroke-width="1.5"
+                    />
+                    <line
+                      x1="8"
+                      y1="7"
+                      x2="8"
+                      y2="12"
+                      stroke="#0C447C"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                    />
+                    <circle cx="8" cy="5" r="0.8" fill="#0C447C" />
+                  </svg>
+                  Why am I seeing this?
+                </button>
+                <div class="post-actions-row">
+                  <button class="post-action-btn">👍 Like</button
+                  ><button class="post-action-btn">💬 Comment</button
+                  ><button class="post-action-btn override">↓ Move down</button
+                  ><button class="post-action-btn override">
+                    ✕ Not interested
+                  </button>
+                </div>
+              </div>
+              <div class="post-card">
+                <div class="ad-meta-row">
+                  <span class="badge badge-ad">Sponsored</span
+                  ><button class="why-ad-btn">Why this ad? ✕</button>
+                </div>
+                <div class="post-header" style="padding-top: 6px">
+                  <div
+                    class="avatar"
+                    style="
+                      background: var(--gray-100);
+                      color: var(--gray-600);
+                      font-size: 10px;
+                    "
+                  >
+                    NK
+                  </div>
+                  <div class="post-meta">
+                    <div class="post-name">Nike Philippines</div>
+                    <div class="post-time">
+                      Shown: you searched running shoes
+                    </div>
+                  </div>
+                </div>
+                <div class="post-text">
+                  Air Max 2025 — Free shipping this weekend.
+                </div>
+                <div class="post-image" style="height: 50px">[ ad image ]</div>
+                <div class="post-actions-row">
+                  <button
+                    class="post-action-btn"
+                    style="color: var(--fb-blue); font-weight: 600"
+                  >
+                    Shop Now</button
+                  ><button class="post-action-btn override">✕ Hide ad</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="diff-label good">
+            Controls visible · Content labeled<br />AI transparent · User in
+            control
+          </div>
+        </div>
+
+        <div class="notes-panel" style="padding-top: 44px">
+          <div class="note-card">
+            <div class="note-tag diff">Key difference 1</div>
+            <div class="note-title">Feed control bar (new)</div>
+            <div class="note-body">
+              The After screen adds a persistent control bar that was completely
+              absent in the Before screen. This single addition gives users
+              meaningful algorithmic control without any extra navigation.
+            </div>
+          </div>
+          <div class="note-card">
+            <div class="note-tag diff">Key difference 2</div>
+            <div class="note-title">Content origin labeling (new)</div>
+            <div class="note-body">
+              Every post in the After screen carries a badge (friend, AI
+              suggested, Sponsored). In the Before screen, there is no visual
+              distinction between organic and algorithmically injected content.
+            </div>
+          </div>
+          <div class="note-card">
+            <div class="note-tag diff">Key difference 3</div>
+            <div class="note-title">Transparency + override chips (new)</div>
+            <div class="note-body">
+              "Why am I seeing this?" and override actions appear on every post
+              in the After screen. The Before screen has no equivalent — the
+              algorithm's reasoning is permanently hidden from the user.
+            </div>
+          </div>
+          <div class="note-card">
+            <div class="note-tag diff">Metaphor shift</div>
+            <div class="note-title">Agent → Supertool</div>
+            <div class="note-body">
+              Before: the algorithm decides everything, user has no
+              visibility.<br /><br />After: the algorithm assists, the user
+              decides — which is what the product always claimed to be.
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </body>
 </html>
+```
